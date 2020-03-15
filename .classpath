@@ -41,5 +41,8 @@
 	<classpathentry kind="lib" path="C:/Users/arun.jose/Downloads/commons-io-2.6/commons-io-2.6-sources.jar"/>
 	<classpathentry kind="lib" path="C:/Users/arun.jose/Downloads/commons-io-2.6/commons-io-2.6-tests.jar"/>
 	<classpathentry kind="lib" path="C:/Users/arun.jose/Downloads/commons-io-2.6/commons-io-2.6-test-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/arun.jose/Downloads/ATUTestRecorder_2.1/ATUTestRecorder_2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/arun.jose/Downloads/ATUReporter_Selenium_testNG_5.1.1 jar javadoc prop file demo proj atu recorder/ATUReporter_Selenium_testNG_5.1.1 jar+javadoc+prop file+demo proj+atu recorder/ATUReporter_Selenium_testNG_5.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/arun.jose/Downloads/ATUReporter_Selenium_testNG_5.1.1 jar javadoc prop file demo proj atu recorder/ATUReporter_Selenium_testNG_5.1.1 jar+javadoc+prop file+demo proj+atu recorder/ATUTestRecorder_2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

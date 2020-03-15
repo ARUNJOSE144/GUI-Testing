@@ -1,5 +1,6 @@
 package DataDriven;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,8 @@ import Modal.Sheet;
 import Modal.SubCase;
 import Modal.Test;
 import Modal.TestCase;
+import atu.testrecorder.ATUTestRecorder;
+import atu.testrecorder.exceptions.ATUTestRecorderException;
 
 public class SeleniumTest {
 
@@ -23,14 +26,21 @@ public class SeleniumTest {
 	ReadExcelFile file;
 	static ExtentTest extentTest;
 	static ExtentReports report;
+	static ATUTestRecorder recorder;
 
-	public static void main(String arg[]) throws InterruptedException, IOException {
+	public static void main(String arg[]) throws InterruptedException, IOException, ATUTestRecorderException {
 		SeleniumTest seleniumTest = new SeleniumTest();
 		seleniumTest.readFile();
 		Utils.NEW_OUTPUT_FOLDER_PATH = Utils.OUTPUT_FOLDER + "\\" + Utils.OUTPUT_FOLDER_PREFIX + "_"
 				+ Utils.getDateString();
 		report = new ExtentReports(
 				Utils.NEW_OUTPUT_FOLDER_PATH + "\\" + Utils.OUTPUT_FILE_PREFIX + "_" + Utils.getDateString() + ".html");
+
+		/*
+		 * String vedioPath = Utils.NEW_OUTPUT_FOLDER_PATH + "\\video\\vedio" +
+		 * Utils.getDateString()+".mov"; new File(vedioPath);
+		 * System.out.println(vedioPath);
+		 */
 
 		seleniumTest.openUrl();
 		seleniumTest.executeTestCases(test);
@@ -135,12 +145,19 @@ public class SeleniumTest {
 		return sheetData;
 	}
 
-	public void executeTestCases(Test test) throws InterruptedException, IOException {
+	public void executeTestCases(Test test) throws InterruptedException, IOException, ATUTestRecorderException {
 		for (Sheet sheet : test.getSheets()) {
 			System.out.println(">>>>>>>>>>>>>>>>>>>>>  Sheet start>>>>>>>>>>>>>>>>>>>>>>>>>");
 			for (TestCase testCase : sheet.getTestCases()) {
 				System.out.println("----------------------  Test Case start---------------------------");
 				startTest(testCase);
+
+				/*
+				 * recorder = new
+				 * ATUTestRecorder("C:\\Users\\arun.jose\\Desktop\\Selenium_Reports","dd"+Utils.
+				 * getDateString(), false); recorder.start();
+				 */
+				startVideo();
 				for (SubCase subCase : testCase.getSubCases()) {
 					System.out.println("---------------------- Sub Test Case start---------------------------");
 					System.out.println("Operation : " + subCase.getOperation());
@@ -156,6 +173,8 @@ public class SeleniumTest {
 
 					System.out.println("---------------------- Sub Test Case  end---------------------------");
 				}
+				recorder.stop();
+
 				endTest();
 				// TimeUnit.SECONDS.sleep(1);
 				System.out.println("----------------------  Test Case end---------------------------");
@@ -164,12 +183,22 @@ public class SeleniumTest {
 		}
 	}
 
-	public void quit(ChromeDriver driver) {
+	public void quit(ChromeDriver driver) throws ATUTestRecorderException {
+
 		driver.quit();
+
 	}
 
 	public static void endTest() {
 		report.endTest(extentTest);
+	}
+
+	public static void startVideo() throws ATUTestRecorderException {
+		Utils.VIDEO_PATH = "C:\\Users\\arun.jose\\Desktop\\Selenium_Reports\\";
+		Utils.VIDEO_FILE_NAME = "video" + Utils.getDateString();
+		recorder = new ATUTestRecorder(Utils.VIDEO_PATH, Utils.VIDEO_FILE_NAME, false);
+		recorder.start();
+		System.out.println("---------recorder : " + recorder);
 	}
 
 }

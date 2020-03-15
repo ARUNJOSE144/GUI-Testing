@@ -3,6 +3,8 @@ package DataDriven;
 import java.io.IOException;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -17,6 +19,7 @@ public class Actions {
 
 		try {
 			if (Utils.validate(subCase.getOperation())) {
+				Utils.addOrRemoveBoarder(subCase,true);
 				switch (subCase.getOperation().toLowerCase()) {
 				case "type":
 					type(subCase, driver);
@@ -38,10 +41,12 @@ public class Actions {
 					break;
 				}
 			}
+			//Utils.addOrRemoveBoarder(subCase,false);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			//commonVerify(subCase, false);
+			// commonVerify(subCase, false);
+			//Utils.addOrRemoveBoarder(subCase,false);
 		}
 
 	}
