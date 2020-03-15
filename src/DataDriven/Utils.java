@@ -13,6 +13,10 @@ import com.relevantcodes.extentreports.LogStatus;
 
 public class Utils {
 	static String BASE_URL = "http://localhost:3000";
+	//static String BASE_URL = "http://10.0.0.95:9094/CoMS-UI-Testing";
+	
+	
+	
 	static String DRIVER_PATH = "C:\\Program Files\\SeleniumWebDriver\\chromedriver_win32\\chromedriver.exe";
 	static String OUTPUT_FOLDER_PREFIX = "testResults\\result";
 	static String OUTPUT_FILE_PREFIX = "Report";
