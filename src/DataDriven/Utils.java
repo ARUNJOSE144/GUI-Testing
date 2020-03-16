@@ -31,13 +31,7 @@ public class Utils {
 	static String VIDEO_PATH = "";
 	static String VIDEO_FILE_NAME = "";
 	static String VIDEO_FORMAT = ".mov";
-	
-	
-	
-	
-	
-	
-	
+	static boolean VIDEO_REQUIRED = true;
 
 	static boolean validate(String val) {
 		if (val != null && !val.equalsIgnoreCase(""))
@@ -54,8 +48,9 @@ public class Utils {
 
 			FileUtils.copyFile(SrcFile, DestFile);
 			SeleniumTest.extentTest.log(LogStatus.INFO, SeleniumTest.extentTest.addScreenCapture(DestFile.getPath()));
-			SeleniumTest.extentTest.log(LogStatus.INFO, "<a href='" + Utils.VIDEO_PATH + Utils.VIDEO_FILE_NAME
-					+ VIDEO_FORMAT + "'><span>Download Video</span>");
+			if (Utils.VIDEO_REQUIRED)
+				SeleniumTest.extentTest.log(LogStatus.INFO, "<a href='" + Utils.VIDEO_PATH + Utils.VIDEO_FILE_NAME
+						+ VIDEO_FORMAT + "'><span>Download Video</span>");
 		} catch (WebDriverException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

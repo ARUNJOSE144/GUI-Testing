@@ -1,5 +1,6 @@
 package DataDriven;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +35,6 @@ public class SeleniumTest {
 				+ Utils.getDateString();
 		report = new ExtentReports(
 				Utils.NEW_OUTPUT_FOLDER_PATH + "\\" + Utils.OUTPUT_FILE_PREFIX + "_" + Utils.getDateString() + ".html");
-
-		/*
-		 * String vedioPath = Utils.NEW_OUTPUT_FOLDER_PATH + "\\video\\vedio" +
-		 * Utils.getDateString()+".mov"; new File(vedioPath);
-		 * System.out.println(vedioPath);
-		 */
 
 		seleniumTest.openUrl();
 		seleniumTest.executeTestCases(test);
@@ -150,12 +145,6 @@ public class SeleniumTest {
 			for (TestCase testCase : sheet.getTestCases()) {
 				System.out.println("----------------------  Test Case start---------------------------");
 				startTest(testCase);
-
-				/*
-				 * recorder = new
-				 * ATUTestRecorder("C:\\Users\\arun.jose\\Desktop\\Selenium_Reports","dd"+Utils.
-				 * getDateString(), false); recorder.start();
-				 */
 				startVideo();
 				for (SubCase subCase : testCase.getSubCases()) {
 					System.out.println("---------------------- Sub Test Case start---------------------------");
@@ -172,7 +161,8 @@ public class SeleniumTest {
 
 					System.out.println("---------------------- Sub Test Case  end---------------------------");
 				}
-				recorder.stop();
+				if (Utils.VIDEO_REQUIRED)
+					recorder.stop();
 
 				endTest();
 				// TimeUnit.SECONDS.sleep(1);
@@ -193,11 +183,13 @@ public class SeleniumTest {
 	}
 
 	public static void startVideo() throws ATUTestRecorderException {
-		Utils.VIDEO_PATH = "C:\\Users\\arun.jose\\Desktop\\Selenium_Reports\\";
-		Utils.VIDEO_FILE_NAME = "video" + Utils.getDateString();
-		recorder = new ATUTestRecorder(Utils.VIDEO_PATH, Utils.VIDEO_FILE_NAME, false);
-		recorder.start();
-		System.out.println("---------recorder : " + recorder);
+		if (Utils.VIDEO_REQUIRED) {
+			Utils.VIDEO_PATH = Utils.NEW_OUTPUT_FOLDER_PATH+"\\video";
+			new File(Utils.VIDEO_PATH).mkdir();
+			Utils.VIDEO_FILE_NAME = "video" + Utils.getDateString();
+			recorder = new ATUTestRecorder(Utils.VIDEO_PATH, Utils.VIDEO_FILE_NAME, false);
+			recorder.start();
+		}
 	}
 
 }
