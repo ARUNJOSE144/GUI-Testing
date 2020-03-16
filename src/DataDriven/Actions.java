@@ -3,8 +3,6 @@ package DataDriven;
 import java.io.IOException;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -19,7 +17,7 @@ public class Actions {
 
 		try {
 			if (Utils.validate(subCase.getOperation())) {
-				Utils.addOrRemoveBoarder(subCase,true);
+				Utils.addOrRemoveBoarder(subCase, true);
 				switch (subCase.getOperation().toLowerCase()) {
 				case "type":
 					type(subCase, driver);
@@ -41,12 +39,12 @@ public class Actions {
 					break;
 				}
 			}
-			//Utils.addOrRemoveBoarder(subCase,false);
+			// Utils.addOrRemoveBoarder(subCase,false);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			// commonVerify(subCase, false);
-			//Utils.addOrRemoveBoarder(subCase,false);
+			// Utils.addOrRemoveBoarder(subCase,false);
 		}
 
 	}
@@ -59,6 +57,12 @@ public class Actions {
 				break;
 			case "class":
 				driver.findElement(By.className(subCase.getKey())).sendKeys(subCase.getData());
+				break;
+			case "id":
+				driver.findElement(By.id(subCase.getKey())).sendKeys(subCase.getData());
+				break;
+			case "xpath":
+				driver.findElement(By.xpath(subCase.getKey())).sendKeys(subCase.getData());
 				break;
 
 			default:
@@ -83,6 +87,9 @@ public class Actions {
 			case "class":
 				driver.findElement(By.className(subCase.getKey())).click();
 				break;
+			case "id":
+				driver.findElement(By.id(subCase.getKey())).click();
+				break;
 			case "xpath":
 				driver.findElement(By.xpath(subCase.getKey())).click();
 				break;
@@ -105,6 +112,15 @@ public class Actions {
 			switch (subCase.getLocatorType().toLowerCase()) {
 			case "url":
 				wait.until(ExpectedConditions.urlToBe(Utils.BASE_URL + subCase.getKey()));
+				break;
+			case "class":
+				wait.until(ExpectedConditions.presenceOfElementLocated(By.className(subCase.getKey())));
+				break;
+			case "id":
+				wait.until(ExpectedConditions.presenceOfElementLocated(By.id(subCase.getKey())));
+				break;
+			case "xpath":
+				wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(subCase.getKey())));
 				break;
 
 			default:

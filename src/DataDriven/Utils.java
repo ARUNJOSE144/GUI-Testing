@@ -30,7 +30,7 @@ public class Utils {
 	static String OUTPUT_FOLDER = System.getProperty("user.dir");
 	static String VIDEO_PATH = "";
 	static String VIDEO_FILE_NAME = "";
-	static String VIDEO_FORMAT=".mov";
+	static String VIDEO_FORMAT = ".mov";
 
 	static boolean validate(String val) {
 		if (val != null && !val.equalsIgnoreCase(""))
@@ -47,8 +47,8 @@ public class Utils {
 
 			FileUtils.copyFile(SrcFile, DestFile);
 			SeleniumTest.extentTest.log(LogStatus.INFO, SeleniumTest.extentTest.addScreenCapture(DestFile.getPath()));
-			SeleniumTest.extentTest.log(LogStatus.INFO,
-					"<a href='" + Utils.VIDEO_PATH + Utils.VIDEO_FILE_NAME + VIDEO_FORMAT+ "'><span>Download Video</span>");
+			SeleniumTest.extentTest.log(LogStatus.INFO, "<a href='" + Utils.VIDEO_PATH + Utils.VIDEO_FILE_NAME
+					+ VIDEO_FORMAT + "'><span>Download Video</span>");
 		} catch (WebDriverException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -85,6 +85,10 @@ public class Utils {
 
 			case "class":
 				element = SeleniumTest.driver.findElement(By.className(subCase.getKey()));
+				break;
+
+			case "xpath":
+				element = SeleniumTest.driver.findElement(By.xpath(subCase.getKey()));
 				break;
 
 			default:
