@@ -28,14 +28,14 @@ public class ReadExcelFile {
 
 	public String getData(int sheetNumer, int row, int column) {
 		sheet = wb.getSheetAt(sheetNumer);
-		String data = null;
+		String data = "";
 		if (sheet != null && sheet.getRow(row) != null && column != 5) {
 			data = sheet.getRow(row).getCell(column) != null ? sheet.getRow(row).getCell(column).getStringCellValue()
-					: null;
+					: "";
 		} else if (sheet != null && sheet.getRow(row) != null && column == 5) {
 			data = sheet.getRow(row).getCell(column) != null
 					? sheet.getRow(row).getCell(column).getNumericCellValue() + ""
-					: null;
+					: "";
 		}
 		return data;
 

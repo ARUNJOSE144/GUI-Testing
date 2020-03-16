@@ -1,6 +1,7 @@
 package DataDriven;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -36,8 +37,13 @@ public class Actions {
 					break;
 
 				default:
-					break;
+					commonVerify(subCase, false, "Invalid Action -> " + subCase.getOperation());
+					throw new Exception("Invalid Action : " + subCase.getOperation());
 				}
+			}
+
+			if ((!subCase.getOperation().equalsIgnoreCase("wait")) && Utils.validate(subCase.getTime())) {
+				TimeUnit.SECONDS.sleep((int) Float.parseFloat(subCase.getTime()));
 			}
 			// Utils.addOrRemoveBoarder(subCase,false);
 		} catch (Exception e) {
@@ -66,13 +72,14 @@ public class Actions {
 				break;
 
 			default:
-				break;
+				commonVerify(subCase, false, "Invalid locatorType -> " + subCase.getLocatorType());
+				throw new Exception("Invalid locatorType : " + subCase.getLocatorType());
 			}
-			commonVerify(subCase, true);
+			commonVerify(subCase, true, "");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			commonVerify(subCase, false);
+			commonVerify(subCase, false,"Invalid locatorType -> " + subCase.getLocatorType());
 		}
 
 	}
@@ -95,13 +102,14 @@ public class Actions {
 				break;
 
 			default:
-				break;
+				commonVerify(subCase, false, "Invalid locatorType -> " + subCase.getLocatorType());
+				throw new Exception("Invalid locatorType : " + subCase.getLocatorType());
 			}
-			commonVerify(subCase, true);
+			commonVerify(subCase, true, "");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			commonVerify(subCase, false);
+			commonVerify(subCase, false, "Invalid locatorType -> " + subCase.getLocatorType());
 		}
 
 	}
@@ -110,6 +118,9 @@ public class Actions {
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, (int) Float.parseFloat(subCase.getTime()));
 			switch (subCase.getLocatorType().toLowerCase()) {
+			case "name":
+				wait.until(ExpectedConditions.presenceOfElementLocated(By.name(subCase.getKey())));
+				break;
 			case "url":
 				wait.until(ExpectedConditions.urlToBe(Utils.BASE_URL + subCase.getKey()));
 				break;
@@ -124,14 +135,15 @@ public class Actions {
 				break;
 
 			default:
-				break;
+				commonVerify(subCase, false, "Invalid locatorType : " + subCase.getLocatorType());
+				throw new Exception("Invalid locatorType -> " + subCase.getLocatorType());
 			}
 
-			commonVerify(subCase, true);
+			commonVerify(subCase, true, "");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			commonVerify(subCase, false);
+			commonVerify(subCase, false, "Invalid locatorType -> " + subCase.getLocatorType());
 		}
 	}
 
@@ -144,7 +156,8 @@ public class Actions {
 		}
 	}
 
-	public void commonVerify(SubCase subCase, boolean isPass) throws IOException {
+	public void commonVerify(SubCase subCase, boolean isPass, String msg) throws IOException {
+		subCase.setErrorMsg(msg);
 		if (isPass) {
 			SeleniumTest.extentTest.log(LogStatus.PASS, getFormattedMsg(subCase, true));
 		} else {

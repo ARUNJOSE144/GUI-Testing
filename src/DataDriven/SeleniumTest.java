@@ -44,8 +44,10 @@ public class SeleniumTest {
 
 	}
 
-	public static void startTest(TestCase testCase) {
-		extentTest = report.startTest(testCase.getTestCaseName());
+	public static void startTest(TestCase testCase, String sheetName) {
+		String testCaseName = Utils.validate(testCase.getTestCaseName()) ? testCase.getTestCaseName()
+				: "Please Give a Test Name";
+		extentTest = report.startTest(sheetName + " : " + testCaseName);
 	}
 
 	public void openUrl() throws InterruptedException {
@@ -70,6 +72,7 @@ public class SeleniumTest {
 
 			Sheet sheet = new Sheet();
 			sheet.setRowData(getRowSheet(i, file.wb.getSheetAt(i)));
+			sheet.setSheetName(file.wb.getSheetAt(i).getSheetName());
 			rowSheets.add(sheet);
 
 		}
@@ -79,6 +82,7 @@ public class SeleniumTest {
 		List<Sheet> sheets = new ArrayList<Sheet>();
 		for (Sheet rowSheet : test.getRowSheets()) {
 			Sheet sheet = getSheet(rowSheet);
+			sheet.setSheetName(rowSheet.getSheetName());
 			sheets.add(sheet);
 		}
 
@@ -127,13 +131,13 @@ public class SeleniumTest {
 		System.out.println("No of records : " + sheet.getLastRowNum());
 		for (int i = 1; i <= sheet.getLastRowNum(); i++) {
 			SubCase subCase = new SubCase();
-			subCase.setOperation(file.getData(sheetNumber, i, 0));
-			subCase.setLocatorType(file.getData(sheetNumber, i, 1));
-			subCase.setKey(file.getData(sheetNumber, i, 2));
+			subCase.setOperation(file.getData(sheetNumber, i, 0).trim());
+			subCase.setLocatorType(file.getData(sheetNumber, i, 1).trim());
+			subCase.setKey(file.getData(sheetNumber, i, 2).trim());
 			subCase.setData(file.getData(sheetNumber, i, 3));
-			subCase.setUrl(file.getData(sheetNumber, i, 4));
-			subCase.setTime(file.getData(sheetNumber, i, 5));
-			subCase.setErrorMsg(file.getData(sheetNumber, i, 6));
+			subCase.setUrl(file.getData(sheetNumber, i, 4).trim());
+			subCase.setTime(file.getData(sheetNumber, i, 5).trim());
+			subCase.setErrorMsg(file.getData(sheetNumber, i, 6).trim());
 			sheetData.add(subCase);
 		}
 		return sheetData;
@@ -141,10 +145,11 @@ public class SeleniumTest {
 
 	public void executeTestCases(Test test) throws InterruptedException, IOException, ATUTestRecorderException {
 		for (Sheet sheet : test.getSheets()) {
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>  Sheet start>>>>>>>>>>>>>>>>>>>>>>>>>");
+			System.out.println(
+					">>>>>>>>>>>>>>>>>>>>>  Sheet " + sheet.getSheetName() + " start>>>>>>>>>>>>>>>>>>>>>>>>>");
 			for (TestCase testCase : sheet.getTestCases()) {
 				System.out.println("----------------------  Test Case start---------------------------");
-				startTest(testCase);
+				startTest(testCase, sheet.getSheetName());
 				startVideo();
 				for (SubCase subCase : testCase.getSubCases()) {
 					System.out.println("---------------------- Sub Test Case start---------------------------");
@@ -184,7 +189,7 @@ public class SeleniumTest {
 
 	public static void startVideo() throws ATUTestRecorderException {
 		if (Utils.VIDEO_REQUIRED) {
-			Utils.VIDEO_PATH = Utils.NEW_OUTPUT_FOLDER_PATH+"\\video";
+			Utils.VIDEO_PATH = Utils.NEW_OUTPUT_FOLDER_PATH + "\\video";
 			new File(Utils.VIDEO_PATH).mkdir();
 			Utils.VIDEO_FILE_NAME = "video" + Utils.getDateString();
 			recorder = new ATUTestRecorder(Utils.VIDEO_PATH, Utils.VIDEO_FILE_NAME, false);

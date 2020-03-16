@@ -20,7 +20,8 @@ public class Utils {
 	static String BASE_URL = "http://localhost:3000";
 	// static String BASE_URL = "http://10.0.0.95:9094/CoMS-UI-Testing";
 
-	static String DRIVER_PATH = System.getProperty("user.dir")+"\\SeleniumWebDriver\\chromedriver_win32\\chromedriver.exe";
+	static String DRIVER_PATH = System.getProperty("user.dir")
+			+ "\\SeleniumWebDriver\\chromedriver_win32\\chromedriver.exe";
 	static String OUTPUT_FOLDER_PREFIX = "testResults\\result";
 	static String OUTPUT_FILE_PREFIX = "Report";
 	static String INPUT_FILE_PATH = "\\testCase\\CommissionSystemTestCases.xlsx";
@@ -69,42 +70,43 @@ public class Utils {
 		File destFile = new File(NEW_OUTPUT_FOLDER_PATH + INPUT_FILE_PATH);
 
 		FileUtils.copyFile(sourceFile, destFile);
-		SeleniumTest.extentTest.log(LogStatus.FAIL, SeleniumTest.extentTest.addScreenCapture(destFile.getPath()));
 	}
 
 	public static void addOrRemoveBoarder(SubCase subCase, boolean isAdd) {
 		WebElement element = null;
-		try {
+		if (validate(subCase.getKey()) && (!subCase.getLocatorType().equalsIgnoreCase("url"))) {
+			try {
 
-			switch (subCase.getLocatorType()) {
-			case "name":
-				element = SeleniumTest.driver.findElement(By.name(subCase.getKey()));
-				break;
+				switch (subCase.getLocatorType()) {
+				case "name":
+					element = SeleniumTest.driver.findElement(By.name(subCase.getKey()));
+					break;
 
-			case "id":
-				element = SeleniumTest.driver.findElement(By.id(subCase.getKey()));
-				break;
+				case "id":
+					element = SeleniumTest.driver.findElement(By.id(subCase.getKey()));
+					break;
 
-			case "class":
-				element = SeleniumTest.driver.findElement(By.className(subCase.getKey()));
-				break;
+				case "class":
+					element = SeleniumTest.driver.findElement(By.className(subCase.getKey()));
+					break;
 
-			case "xpath":
-				element = SeleniumTest.driver.findElement(By.xpath(subCase.getKey()));
-				break;
+				case "xpath":
+					element = SeleniumTest.driver.findElement(By.xpath(subCase.getKey()));
+					break;
 
-			default:
-				break;
+				default:
+					break;
+				}
+
+				JavascriptExecutor js = (JavascriptExecutor) SeleniumTest.driver;
+				if (isAdd)
+					js.executeScript("arguments[0].setAttribute('style', 'border: 3px solid red')", element);
+				else
+					js.executeScript("arguments[0].setAttribute('style', 'border: 0px')", element);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
-			JavascriptExecutor js = (JavascriptExecutor) SeleniumTest.driver;
-			if (isAdd)
-				js.executeScript("arguments[0].setAttribute('style', 'border: 3px solid red')", element);
-			else
-				js.executeScript("arguments[0].setAttribute('style', 'border: 0px')", element);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 
 	}

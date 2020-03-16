@@ -6,6 +6,7 @@ public class Sheet {
 
 	List<TestCase> testCases;
 	List<SubCase> rowData;
+	String sheetName;
 
 	public List<TestCase> getTestCases() {
 		return testCases;
@@ -23,5 +24,12 @@ public class Sheet {
 		this.rowData = rowData;
 	}
 
-	
+	public String getSheetName() {
+		return sheetName;
+	}
+
+	public void setSheetName(String sheetName) {
+		this.sheetName = sheetName;
+	}
+
 }
