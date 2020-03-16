@@ -31,6 +31,13 @@ public class Utils {
 	static String VIDEO_PATH = "";
 	static String VIDEO_FILE_NAME = "";
 	static String VIDEO_FORMAT = ".mov";
+	
+	
+	
+	
+	
+	
+	
 
 	static boolean validate(String val) {
 		if (val != null && !val.equalsIgnoreCase(""))
