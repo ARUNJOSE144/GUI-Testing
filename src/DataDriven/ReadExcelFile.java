@@ -3,6 +3,7 @@ package DataDriven;
 import java.io.File;
 import java.io.FileInputStream;
 
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -29,12 +30,11 @@ public class ReadExcelFile {
 	public String getData(int sheetNumer, int row, int column) {
 		sheet = wb.getSheetAt(sheetNumer);
 		String data = "";
-		if (sheet != null && sheet.getRow(row) != null && column != 5) {
+
+		if (sheet != null && sheet.getRow(row) != null && sheet.getRow(row).getCell(column) != null) {
+			//Setting all cell types to String 
+			sheet.getRow(row).getCell(column).setCellType(CellType.STRING);
 			data = sheet.getRow(row).getCell(column) != null ? sheet.getRow(row).getCell(column).getStringCellValue()
-					: "";
-		} else if (sheet != null && sheet.getRow(row) != null && column == 5) {
-			data = sheet.getRow(row).getCell(column) != null
-					? sheet.getRow(row).getCell(column).getNumericCellValue() + ""
 					: "";
 		}
 		return data;
