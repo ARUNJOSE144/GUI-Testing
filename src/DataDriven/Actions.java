@@ -59,15 +59,19 @@ public class Actions {
 		try {
 			switch (subCase.getLocatorType().toLowerCase()) {
 			case "name":
+				driver.findElement(By.name(subCase.getKey())).clear();
 				driver.findElement(By.name(subCase.getKey())).sendKeys(subCase.getData());
 				break;
 			case "class":
+				driver.findElement(By.className(subCase.getKey())).clear();
 				driver.findElement(By.className(subCase.getKey())).sendKeys(subCase.getData());
 				break;
 			case "id":
+				driver.findElement(By.id(subCase.getKey())).clear();
 				driver.findElement(By.id(subCase.getKey())).sendKeys(subCase.getData());
 				break;
 			case "xpath":
+				driver.findElement(By.xpath(subCase.getKey())).clear();
 				driver.findElement(By.xpath(subCase.getKey())).sendKeys(subCase.getData());
 				break;
 
@@ -79,7 +83,7 @@ public class Actions {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			commonVerify(subCase, false,"Invalid locatorType -> " + subCase.getLocatorType());
+			commonVerify(subCase, false, "Invalid locatorType -> " + subCase.getLocatorType());
 		}
 
 	}
