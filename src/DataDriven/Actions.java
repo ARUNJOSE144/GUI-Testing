@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -59,19 +60,20 @@ public class Actions {
 		try {
 			switch (subCase.getLocatorType().toLowerCase()) {
 			case "name":
-				driver.findElement(By.name(subCase.getKey())).clear();
+				driver.findElement(By.name(subCase.getKey())).sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
 				driver.findElement(By.name(subCase.getKey())).sendKeys(subCase.getData());
+				
 				break;
 			case "class":
-				driver.findElement(By.className(subCase.getKey())).clear();
+				driver.findElement(By.className(subCase.getKey())).sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
 				driver.findElement(By.className(subCase.getKey())).sendKeys(subCase.getData());
 				break;
 			case "id":
-				driver.findElement(By.id(subCase.getKey())).clear();
+				driver.findElement(By.id(subCase.getKey())).sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
 				driver.findElement(By.id(subCase.getKey())).sendKeys(subCase.getData());
 				break;
 			case "xpath":
-				driver.findElement(By.xpath(subCase.getKey())).clear();
+				driver.findElement(By.xpath(subCase.getKey())).sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
 				driver.findElement(By.xpath(subCase.getKey())).sendKeys(subCase.getData());
 				break;
 
