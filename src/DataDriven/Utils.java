@@ -15,24 +15,26 @@ import org.openqa.selenium.WebElement;
 import com.relevantcodes.extentreports.LogStatus;
 
 import Modal.SubCase;
+import Modal.SystemProperty;
 
 public class Utils {
-	static String BASE_URL = "http://localhost:3000";
-	// static String BASE_URL = "http://10.0.0.95:9094/CoMS-UI-Testing";
-
 	static String DRIVER_PATH = System.getProperty("user.dir")
 			+ "\\SeleniumWebDriver\\chromedriver_win32\\chromedriver.exe";
 	static String OUTPUT_FOLDER_PREFIX = "testResults\\result";
 	static String OUTPUT_FILE_PREFIX = "Report";
 	static String INPUT_FILE_PATH = "\\testCase\\CommissionSystemTestCases.xlsx";
-	static int IMPLICIT_WAIT = 3;
 
 	static String NEW_OUTPUT_FOLDER_PATH = "";
 	static String OUTPUT_FOLDER = System.getProperty("user.dir");
 	static String VIDEO_PATH = "";
 	static String VIDEO_FILE_NAME = "";
 	static String VIDEO_FORMAT = ".mov";
-	static boolean VIDEO_REQUIRED = true;
+
+	static SystemProperty systemProperty = new SystemProperty();
+	
+	
+	
+	
 
 	static boolean validate(String val) {
 		if (val != null && !val.equalsIgnoreCase(""))
@@ -49,7 +51,7 @@ public class Utils {
 
 			FileUtils.copyFile(SrcFile, DestFile);
 			SeleniumTest.extentTest.log(LogStatus.INFO, SeleniumTest.extentTest.addScreenCapture(DestFile.getPath()));
-			if (Utils.VIDEO_REQUIRED)
+			if (systemProperty.properties.getProperty("VIDEO_REQUIRED").equalsIgnoreCase("true"))
 				SeleniumTest.extentTest.log(LogStatus.INFO, "<a href='" + Utils.VIDEO_PATH + Utils.VIDEO_FILE_NAME
 						+ VIDEO_FORMAT + "'><span>Download Video</span>");
 		} catch (WebDriverException e) {

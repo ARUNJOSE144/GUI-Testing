@@ -14,6 +14,7 @@ import com.relevantcodes.extentreports.ExtentTest;
 
 import Modal.Sheet;
 import Modal.SubCase;
+import Modal.SystemProperty;
 import Modal.Test;
 import Modal.TestCase;
 import atu.testrecorder.ATUTestRecorder;
@@ -27,6 +28,7 @@ public class SeleniumTest {
 	static ExtentTest extentTest;
 	static ExtentReports report;
 	static ATUTestRecorder recorder;
+	static SystemProperty systemProperty = new SystemProperty();
 
 	public static void main(String arg[]) throws InterruptedException, IOException, ATUTestRecorderException {
 		SeleniumTest seleniumTest = new SeleniumTest();
@@ -54,10 +56,11 @@ public class SeleniumTest {
 		try {
 			System.setProperty("webdriver.chrome.driver", Utils.DRIVER_PATH);
 			driver = new ChromeDriver();
-			driver.manage().timeouts().implicitlyWait(Utils.IMPLICIT_WAIT, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(
+					Integer.parseInt(systemProperty.properties.getProperty("IMPLICIT_WAIT")), TimeUnit.SECONDS);
 
 			driver.manage().window().maximize();
-			driver.get(Utils.BASE_URL);
+			driver.get(systemProperty.properties.getProperty("BASE_URL"));
 
 		} catch (Exception e) { // TODO Auto-generated catch block
 			e.printStackTrace();
@@ -166,7 +169,7 @@ public class SeleniumTest {
 
 					System.out.println("---------------------- Sub Test Case  end---------------------------");
 				}
-				if (Utils.VIDEO_REQUIRED)
+				if (systemProperty.properties.getProperty("VIDEO_REQUIRED").equalsIgnoreCase("true"))
 					recorder.stop();
 
 				endTest();
@@ -188,7 +191,7 @@ public class SeleniumTest {
 	}
 
 	public static void startVideo() throws ATUTestRecorderException {
-		if (Utils.VIDEO_REQUIRED) {
+		if (systemProperty.properties.getProperty("VIDEO_REQUIRED").equalsIgnoreCase("true")) {
 			Utils.VIDEO_PATH = Utils.NEW_OUTPUT_FOLDER_PATH + "\\video";
 			new File(Utils.VIDEO_PATH).mkdir();
 			Utils.VIDEO_FILE_NAME = "video" + Utils.getDateString();

@@ -12,8 +12,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.relevantcodes.extentreports.LogStatus;
 
 import Modal.SubCase;
+import Modal.SystemProperty;
 
 public class Actions {
+
+	static SystemProperty systemProperty = new SystemProperty();
 
 	public void doAction(SubCase subCase, ChromeDriver driver) throws IOException {
 
@@ -28,7 +31,6 @@ public class Actions {
 					click(subCase, driver);
 					break;
 				case "goto":
-					driver.get(Utils.BASE_URL + subCase.getUrl());
 					break;
 				case "wait":
 					waitFor(subCase, driver);
@@ -60,20 +62,20 @@ public class Actions {
 		try {
 			switch (subCase.getLocatorType().toLowerCase()) {
 			case "name":
-				driver.findElement(By.name(subCase.getKey())).sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
+				driver.findElement(By.name(subCase.getKey())).sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
 				driver.findElement(By.name(subCase.getKey())).sendKeys(subCase.getData());
-				
+
 				break;
 			case "class":
-				driver.findElement(By.className(subCase.getKey())).sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
+				driver.findElement(By.className(subCase.getKey())).sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
 				driver.findElement(By.className(subCase.getKey())).sendKeys(subCase.getData());
 				break;
 			case "id":
-				driver.findElement(By.id(subCase.getKey())).sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
+				driver.findElement(By.id(subCase.getKey())).sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
 				driver.findElement(By.id(subCase.getKey())).sendKeys(subCase.getData());
 				break;
 			case "xpath":
-				driver.findElement(By.xpath(subCase.getKey())).sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
+				driver.findElement(By.xpath(subCase.getKey())).sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
 				driver.findElement(By.xpath(subCase.getKey())).sendKeys(subCase.getData());
 				break;
 
@@ -128,7 +130,8 @@ public class Actions {
 				wait.until(ExpectedConditions.presenceOfElementLocated(By.name(subCase.getKey())));
 				break;
 			case "url":
-				wait.until(ExpectedConditions.urlToBe(Utils.BASE_URL + subCase.getKey()));
+				wait.until(ExpectedConditions
+						.urlToBe(systemProperty.properties.getProperty("BASE_URL") + subCase.getKey()));
 				break;
 			case "class":
 				wait.until(ExpectedConditions.presenceOfElementLocated(By.className(subCase.getKey())));
@@ -154,7 +157,8 @@ public class Actions {
 	}
 
 	public void verify(SubCase subCase, ChromeDriver driver) throws IOException {
-		if (driver.getCurrentUrl().equalsIgnoreCase(Utils.BASE_URL + subCase.getKey())) {
+		if (driver.getCurrentUrl()
+				.equalsIgnoreCase(systemProperty.properties.getProperty("BASE_URL") + subCase.getKey())) {
 			SeleniumTest.extentTest.log(LogStatus.PASS, getFormattedMsg(subCase, true));
 		} else {
 			SeleniumTest.extentTest.log(LogStatus.FAIL, getFormattedMsg(subCase, false));
